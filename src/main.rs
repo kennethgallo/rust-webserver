@@ -7,14 +7,15 @@
 
 use std::{
     io::{prelude::*, BufReader},
-    net::{TcpListener, TcpStream},
+    net::{TcpListener, TcpStream, SocketAddr},
 };
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-
     for stream in listener.incoming() {
         let stream = stream.unwrap();
+        // ok((socket: TcpStream, addr: SocketAddr)) => println!("The client info: {:?}", addr),
+        // Err(e: Error) => println("Couldn't get client: {:?}", e);
 
         handle_connection(stream);
     }
