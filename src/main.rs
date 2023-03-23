@@ -1,33 +1,35 @@
 /*
-    Starter code for opening a TCP socket
-    and handling connections in Rust. 
+    Rust-webserver for Spring 2023-ITCS-4102-090:ITCS-5102-090_Combined
+    Students Todd Hetrick, Calvin Hathcock, Chase Starr, Gloria Allison, Jacob Dent, Kenneth Gallo
 
-    Source: https://doc.rust-lang.org/book/ch20-01-single-threaded.html
 */
+mod handlers;
+
+use handlers::http_handler;
 
 use std::{
-    io::{prelude::*, BufReader},
-    net::{TcpListener, TcpStream, SocketAddr},
+    
+    net::{TcpListener, SocketAddr}
 };
 
 fn main() {
-    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
+
+    let address: SocketAddr = "0.0.0.0:80".parse().unwrap();
+    let listener = TcpListener::bind(address).unwrap();
+    
+  
     for stream in listener.incoming() {
-        let stream = stream.unwrap();
-        // ok((socket: TcpStream, addr: SocketAddr)) => println!("The client info: {:?}", addr),
-        // Err(e: Error) => println("Couldn't get client: {:?}", e);
+        match stream{
+            Ok(stream) => {
+                
+                println!("Connection on  {} from {}", stream.local_addr().unwrap(), stream.peer_addr().unwrap());
+                http_handler(stream);
+            }
+            Err(e) => {
+                println!("TCP Client conection Error {}",e);
+                
+            }
+        }
 
-        handle_connection(stream);
     }
-}
-
-fn handle_connection(mut stream: TcpStream) {
-    let buf_reader = BufReader::new(&mut stream);
-    let http_request: Vec<_> = buf_reader
-        .lines()
-        .map(|result| result.unwrap())
-        .take_while(|line| !line.is_empty())
-        .collect();
-
-    println!("Request: {:#?}", http_request);
 }
