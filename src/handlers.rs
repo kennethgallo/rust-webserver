@@ -6,23 +6,28 @@ struct Request {
     method: String,
     path: String,
     host: String,
-    user-agent: String,
+    user_agent: String
     //headers: Vec<(String, String)>,
 }
 
 pub fn http_handler(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
-    let mut headers = Vec::new();
+    //let mut headers = Vec::new();
+
+    //let request = Request;
 
     stream.read(&mut buffer).unwrap();
     let request_str = String::from_utf8_lossy(&buffer[..]);
     let mut lines = request_str.lines();
 
+
+
     // Parse the first line of the request
-    //let request_line = lines.next().unwrap();
-    //let mut parts = request_line.split_whitespace();
-    //let method = parts.next().unwrap().to_string();
-    //let path = parts.next().unwrap().to_string();
+    let request_line = lines.next().unwrap();
+    println!("Firstline {}",request_line);
+    let mut parts = request_line.split_whitespace();
+    let method = parts.next().unwrap().to_string();
+    let path = parts.next().unwrap().to_string();
 
     // Parse the headers
     for line in lines {
@@ -32,7 +37,7 @@ pub fn http_handler(mut stream: TcpStream) {
         let mut parts = line.splitn(2, ':');
         let name = parts.next().unwrap().to_string();
         let value = parts.next().unwrap().to_string();
-        println("Header name:{} val{}",name,val);
+        println!("Header name:{} val{}",name,value);
         //headers.push((name, value));
     }
 
@@ -41,7 +46,7 @@ pub fn http_handler(mut stream: TcpStream) {
      //   path,
         //headers,
     //};
-    println!("{:#?}", request);
+    //println!("{:#?}", request);
 
     // Respond to the client
     //let response = "HTTP/1.1 200 OK\r\n\r\n";
