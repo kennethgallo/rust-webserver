@@ -1,13 +1,13 @@
 use std::io::{Read};
 use std::net::{TcpStream};
 
-#[derive(Debug)]
+/*#[derive(Debug)]
 struct Request {
     method: String,
     path: String,
     host: String,
     user_agent: String
-}
+}*/
 
 pub fn http_handler(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
