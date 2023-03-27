@@ -3,12 +3,13 @@
     Students Todd Hetrick, Calvin Hathcock, Chase Starr, Gloria Allison, Jacob Dent, Kenneth Gallo
 
 */
+#![warn(unused_extern_crates)]
+
 mod handlers;
 
 use handlers::http_handler;
 
-use std::{
-    
+use std::{   
     net::{TcpListener, SocketAddr}
 };
 
