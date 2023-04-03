@@ -1,13 +1,6 @@
-use std::io::{Read};
+use std::fs::File;
+use std::io::{Read,Write};
 use std::net::{TcpStream};
-
-/*#[derive(Debug)]
-struct Request {
-    method: String,
-    path: String,
-    host: String,
-    user_agent: String
-}*/
 
 pub fn http_handler(mut stream: TcpStream) {
     let mut buffer = [0; 1024];
@@ -20,34 +13,35 @@ pub fn http_handler(mut stream: TcpStream) {
     let request_line = lines.next().unwrap();
     let mut parts = request_line.split_whitespace();
     let method = parts.next().unwrap().to_string();
-    let path = parts.next().unwrap().to_string();
+    let mut path = parts.next().unwrap().to_string();
 
-    // Parse the header lines. Not sure if we need this but keep incase we need other header data.
-   /*  for line in lines {
-        if line.trim().is_empty() {
-            break;
-        }
-        let mut parts = line.splitn(2, ':');
-        let name = parts.next().unwrap().to_string();
-        let value = parts.next().unwrap().to_string();
-        //println!("Header name:{} val{}",name,value);
-        
-    }*/
-
-    // if req a file call get_file
-
-    //if req an image call get_image
+    path = "./www".to_owned()+ &path;
 
     println!("method:{} path:{}",method,path);
+
+    get_file(stream, path);
 
 
 }
 
-pub fn get_file(mut stream: TcpStream){
-        // Respond to the client
-    //let response = "HTTP/1.1 200 OK\r\n\r\n";
-    //stream.write(response.as_bytes()).unwrap();
-    //stream.flush().unwrap();
+pub fn get_file(mut stream: TcpStream, path: String){
+
+    let mut file = match File::open(path.clone()) {
+        Ok(file) => file,
+        Err(err) => { 
+            eprintln!("Error: {}", err);
+            eprintln!("Path requested: {}", path);
+            return;}
+    };
+
+    let mut html = String::new();
+    file.read_to_string(&mut html).unwrap();
+
+        
+    let response = "HTTP/1.1 200 OK\r\n\r\n";
+    stream.write(html.as_bytes());
+    stream.flush();
+    
 
 }
 
