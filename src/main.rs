@@ -21,8 +21,7 @@ fn main() {
   
     for stream in listener.incoming() {
         match stream{
-            Ok(stream) => {
-                
+            Ok(stream) => {                
                 println!("Connection on  {} from {}", stream.local_addr().unwrap(), stream.peer_addr().unwrap());
                 http_handler(stream);
             }

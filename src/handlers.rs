@@ -31,25 +31,47 @@ pub fn get_file(mut stream: TcpStream, path: String){
         Err(err) => { 
             eprintln!("Error: {}", err);
             eprintln!("Path requested: {}", path);
+            resp_notfound(stream);
             return;}
     };
 
     let mut html = String::new();
     file.read_to_string(&mut html).unwrap();
 
+    let response  = format! {
+        "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: {}\r\n\r\n{}",
+        html.len(),
+        html
+
+    };
         
-    let response = "HTTP/1.1 200 OK\r\n\r\n";
-    stream.write(html.as_bytes());
-    stream.flush();
-    
+    stream.write(response.as_bytes()).unwrap();
+    stream.flush().unwrap();
+
+ 
 
 }
 
-pub fn get_image(mut stream: TcpStream){
+pub fn resp_notfound(mut stream: TcpStream){
+
+
+    let html_body = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
+    let response = format!(
+        "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nContent-Length: {}\r\n\r\n{}",
+        html_body.len(),
+        html_body
+    );
+        
+    stream.write(response.as_bytes()).unwrap();
+    stream.flush().unwrap();
+
+}
+
+//pub fn get_image(mut stream: TcpStream){
         // Respond to the client
     //let response = "HTTP/1.1 200 OK\r\n\r\n";
     //stream.write(response.as_bytes()).unwrap();
     //stream.flush().unwrap();
 
-}
+//}
 
