@@ -9,23 +9,44 @@ pub fn http_handler(mut stream: TcpStream) {
 
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut req = httparse::Request::new(&mut headers);
-    let res = req.parse(&buffer).unwrap();
+    let _res = req.parse(&buffer).unwrap();
 
     get_file(stream, req.path.unwrap()); 
 }
 
-pub fn get_file(mut stream: TcpStream, path: &str){
+pub fn get_file(stream: TcpStream, path: &str){
 
     let full_path = "./www".to_owned() + path;
-    let mut file = match File::open(full_path.clone()) {
+
+    let file_extension = match path.split('.').last() {
+        Some(ext) => ext,
+        None => ""
+    };
+
+    match file_extension {
+        "html" => {
+            get_html(stream, &full_path);
+        },
+        "jpg" => {
+            //get_image(stream, &full_path);
+        },
+        _ => { 
+            resp_notfound(stream);
+        }
+    };
+}
+
+pub fn get_html(mut stream: TcpStream, path: &String) {
+
+    let mut file = match File::open(path) {
         Ok(file) => file,
         Err(err) => { 
             eprintln!("Error: {}", err);
-            eprintln!("Path requested: {}", path);
+            eprintln!("Path requested: {}", &path);
             resp_notfound(stream);
             return;
         }
-    };
+    };  
 
     let mut html = String::new();
     file.read_to_string(&mut html).unwrap();
@@ -36,13 +57,20 @@ pub fn get_file(mut stream: TcpStream, path: &str){
         html
 
     };
-        
+
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
 }
 
-pub fn resp_notfound(mut stream: TcpStream){
+pub fn get_image(mut stream: TcpStream) {
+    // TODO
+    //let response = "HTTP/1.1 200 OK\r\n\r\n";
+    //stream.write(response.as_bytes()).unwrap();
+    //stream.flush().unwrap();
 
+}
+
+pub fn resp_notfound(mut stream: TcpStream){
 
     let html_body = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
     let response = format!(
@@ -55,12 +83,3 @@ pub fn resp_notfound(mut stream: TcpStream){
     stream.flush().unwrap();
 
 }
-
-//pub fn get_image(mut stream: TcpStream){
-        // Respond to the client
-    //let response = "HTTP/1.1 200 OK\r\n\r\n";
-    //stream.write(response.as_bytes()).unwrap();
-    //stream.flush().unwrap();
-
-//}
-
