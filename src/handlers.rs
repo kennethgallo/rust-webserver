@@ -27,8 +27,8 @@ pub fn get_file(stream: TcpStream, path: &str){
         "html" => {
             get_html(stream, &full_path);
         },
-        "jpg" => {
-            //get_image(stream, &full_path);
+        "png" => {
+            get_image(stream, &full_path);
         },
         _ => { 
             resp_notfound(stream);
@@ -62,12 +62,26 @@ pub fn get_html(mut stream: TcpStream, path: &String) {
     stream.flush().unwrap();
 }
 
-pub fn get_image(mut stream: TcpStream) {
-    // TODO
-    //let response = "HTTP/1.1 200 OK\r\n\r\n";
-    //stream.write(response.as_bytes()).unwrap();
-    //stream.flush().unwrap();
+pub fn get_image(mut stream: TcpStream, path: &String) {
 
+    let headers = "HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
+    stream.write(headers.as_bytes()).unwrap();
+
+    let mut file = match File::open(path) {
+        Ok(file) => file,
+        Err(err) => { 
+            eprintln!("Error: {}", err);
+            eprintln!("Path requested: {}", &path);
+            resp_notfound(stream);
+            return;
+        }
+    };
+
+    let mut buffer = Vec::new();
+    file.read_to_end(&mut buffer).unwrap();
+
+    stream.write(&buffer).unwrap();
+    stream.flush().unwrap();
 }
 
 pub fn resp_notfound(mut stream: TcpStream){
