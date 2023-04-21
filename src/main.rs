@@ -6,18 +6,20 @@
 #![warn(unused_extern_crates)]
 
 mod handlers;
-
 use handlers::http_handler;
 
-use std::{   
-    net::{TcpListener, SocketAddr}
-};
+use dotenv::dotenv;
+use std::env;
+use std::net::{TcpListener, SocketAddr};
+
 
 fn main() {
-
-    let address: SocketAddr = "0.0.0.0:80".parse().unwrap();
-    let listener = TcpListener::bind(address).unwrap();
     
+    dotenv().ok();
+    let address = env::var("SOCKET_ADDR")
+            .expect("Socket address not found in environment variables.");
+
+    let listener = TcpListener::bind(address).unwrap();
   
     for stream in listener.incoming() {
         match stream{
@@ -30,6 +32,5 @@ fn main() {
                 
             }
         }
-
     }
 }

@@ -1,9 +1,13 @@
 use std::fs::File;
 use std::io::{Read,Write};
 use std::net::{TcpStream};
+use std::env;
 
 pub fn http_handler(mut stream: TcpStream) {
     
+    let root: String = env::var("FILE_ROOT")
+            .expect("File root not found in environment variables.");
+
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
 
@@ -11,12 +15,12 @@ pub fn http_handler(mut stream: TcpStream) {
     let mut req = httparse::Request::new(&mut headers);
     let _res = req.parse(&buffer).unwrap();
 
-    get_file(stream, req.path.unwrap()); 
+    let path = root.to_owned() + req.path.unwrap();
+
+    get_file(stream, &path); 
 }
 
-pub fn get_file(stream: TcpStream, path: &str){
-
-    let full_path = "./www".to_owned() + path;
+pub fn get_file(stream: TcpStream, path: &String){
 
     let file_extension = match path.split('.').last() {
         Some(ext) => ext,
@@ -25,10 +29,10 @@ pub fn get_file(stream: TcpStream, path: &str){
 
     match file_extension {
         "html" => {
-            get_html(stream, &full_path);
+            get_html(stream, &path);
         },
         "png" => {
-            get_image(stream, &full_path);
+            get_image(stream, &path);
         },
         _ => { 
             resp_notfound(stream);
@@ -95,5 +99,4 @@ pub fn resp_notfound(mut stream: TcpStream){
         
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
-
 }
