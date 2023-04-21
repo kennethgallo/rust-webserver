@@ -10,7 +10,7 @@ use handlers::http_handler;
 
 use dotenv::dotenv;
 use std::env;
-use std::net::{TcpListener, SocketAddr};
+use std::net::TcpListener;
 
 
 fn main() {

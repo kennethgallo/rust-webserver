@@ -4,9 +4,6 @@ use std::net::{TcpStream};
 use std::env;
 
 pub fn http_handler(mut stream: TcpStream) {
-    
-    let root: String = env::var("FILE_ROOT")
-            .expect("File root not found in environment variables.");
 
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
@@ -15,12 +12,15 @@ pub fn http_handler(mut stream: TcpStream) {
     let mut req = httparse::Request::new(&mut headers);
     let _res = req.parse(&buffer).unwrap();
 
-    let path = root.to_owned() + req.path.unwrap();
-
-    get_file(stream, &path); 
+    get_file(stream, req.path.unwrap()); 
 }
 
-pub fn get_file(stream: TcpStream, path: &String){
+pub fn get_file(stream: TcpStream, path: &str) {
+
+    let root: String = env::var("FILE_ROOT")
+            .expect("File root not found in environment variables.");
+
+    let path = root + path;
 
     let file_extension = match path.split('.').last() {
         Some(ext) => ext,
