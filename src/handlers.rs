@@ -10,7 +10,14 @@ pub fn http_handler(mut stream: TcpStream) {
 
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut req = httparse::Request::new(&mut headers);
-    let _res = req.parse(&buffer).unwrap();
+
+    let _res = match req.parse(&buffer) {
+        Ok(value) => value,
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            return; 
+        }
+    };
 
     get_file(stream, req.path.unwrap()); 
 }
