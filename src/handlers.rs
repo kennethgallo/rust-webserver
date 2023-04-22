@@ -6,7 +6,15 @@ use std::env;
 pub fn http_handler(mut stream: TcpStream) {
 
     let mut buffer = [0; 1024];
-    stream.read(&mut buffer).unwrap();
+    
+    match stream.read(&mut buffer) {
+        Ok(len) => len,
+        Err(e) => {
+            eprintln!("Error: {:?}", e);
+            return;
+        }
+    };
+    
 
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut req = httparse::Request::new(&mut headers);
