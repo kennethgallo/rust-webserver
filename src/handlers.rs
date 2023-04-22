@@ -20,7 +20,14 @@ pub fn get_file(stream: TcpStream, path: &str) {
     let root: String = env::var("FILE_ROOT")
             .expect("File root not found in environment variables.");
 
-    let path = root + path;
+    let mut path = root + path;
+
+    let file_name = path.split('/').last().unwrap_or("");
+
+    if file_name == ""{
+        path = path + "index.html";
+    }
+
 
     let file_extension = match path.split('.').last() {
         Some(ext) => ext,
@@ -90,7 +97,7 @@ pub fn get_image(mut stream: TcpStream, path: &String) {
 
 pub fn resp_notfound(mut stream: TcpStream){
 
-    let html_body = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1></body></html>";
+    let html_body = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1>rust-webserver</body></html>";
     let response = format!(
         "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nContent-Length: {}\r\n\r\n{}",
         html_body.len(),
