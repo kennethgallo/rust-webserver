@@ -11,6 +11,7 @@ use handlers::http_handler;
 use dotenv::dotenv;
 use std::env;
 use std::net::TcpListener;
+use std::thread;
 
 
 fn main() {
@@ -25,7 +26,7 @@ fn main() {
         match stream{
             Ok(stream) => {                
                 println!("Connection on  {} from {}", stream.local_addr().unwrap(), stream.peer_addr().unwrap());
-                http_handler(stream);
+                thread::spawn(||  http_handler(stream));               
             }
             Err(e) => {
                 println!("TCP Client conection Error {}",e);
