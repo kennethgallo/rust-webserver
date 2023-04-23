@@ -30,6 +30,7 @@ pub fn http_handler(mut stream: TcpStream) {
     get_file(stream, req.path.unwrap()); 
 }
 
+// function that gets the file for web server
 pub fn get_file(stream: TcpStream, path: &str) {
 
     let root: String = env::var("FILE_ROOT")
@@ -62,6 +63,7 @@ pub fn get_file(stream: TcpStream, path: &str) {
     };
 }
 
+// function to transmit a requested html page to a client
 pub fn get_html(mut stream: TcpStream, path: &String) {
 
     let mut file = match File::open(path) {
@@ -88,6 +90,7 @@ pub fn get_html(mut stream: TcpStream, path: &String) {
     stream.flush().unwrap();
 }
 
+//function to transmit a requested image to a client 
 pub fn get_image(mut stream: TcpStream, path: &String) {
 
     let headers = "HTTP/1.1 200 OK\r\nContent-Type: image/png\r\n\r\n";
@@ -109,7 +112,7 @@ pub fn get_image(mut stream: TcpStream, path: &String) {
     stream.write(&buffer).unwrap();
     stream.flush().unwrap();
 }
-
+//Function to display an error message when the client requests a resource that does not exist.
 pub fn resp_notfound(mut stream: TcpStream){
 
     let html_body = "<html><head><title>404 Not Found</title></head><body><h1>404 Not Found</h1>rust-webserver</body></html>";

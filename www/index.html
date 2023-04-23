@@ -1,72 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome to Rust Web Server</title>
+    <!--The style section contains the css for the webpage-->
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-        }
+      body {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
 
-        h1 {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 10px;
-        }
+      h1 {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 10px;
+      }
 
-        p {
-            font-size: 1.1rem;
-            color: #666;
-            text-align: center;
-            margin-bottom: 20px;
-        }
+      p {
+        font-size: 1.1rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        a {
-            color: #4285f4;
-            text-decoration: none;
-        }
+      a {
+        color: #4285f4;
+        text-decoration: none;
+      }
 
-        a:hover {
-            text-decoration: underline;
-        }
+      /* this css code will activate when mouse hovers over a */
+      a:hover {
+        text-decoration: underline;
+      }
 
-        .logo {
-            display: block;
-            margin: 0 auto;
-            width: 2in;
-            height: 2in;
-          }
+      .logo {
+        display: block;
+        margin: 0 auto;
+        width: 2in;
+        height: 2in;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <!--body contains all visible parts of html-->
+  <body>
+    <!--This div contains both the header, the image, and the paragaph.-->
     <div class="container">
-        <h1>Welcome to Rust Web Server</h1>
-        <p>
-            Rust-webserver for Spring 2023-ITCS-4102-090:ITCS-5102-090_Combined<br>
-            Students Todd Hetrick, Calvin Hathcock, Chase Starr, Gloria Allison, Jacob Dent, Kenneth Gallo</p>
-            <p>To learn more about Rust and web development, visit the <a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer">official Rust website</a>.
-        </p>
-        <img src="Rust.png" class="logo">
+      <h1>Welcome to Rust Web Server</h1>
+      <p>
+        Rust-webserver for Spring 2023-ITCS-4102-090:ITCS-5102-090_Combined<br />
+        Students Todd Hetrick, Calvin Hathcock, Chase Starr, Gloria Allison,
+        Jacob Dent, Kenneth Gallo
+      </p>
+      <p>
+        To learn more about Rust and web development, visit the
+        <a
+          href="https://www.rust-lang.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >official Rust website</a
+        >.
+      </p>
+      <img src="Rust.png" class="logo" />
     </div>
-</body>
+  </body>
 </html>
