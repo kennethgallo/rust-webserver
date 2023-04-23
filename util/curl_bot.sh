@@ -2,7 +2,12 @@
 
 url="http://slapkins.com/test.html"
 
-for i in {1..1000}
-do
-    curl -s  "$url" > /dev/null  
-done
+make_request() {
+    curl -s  "$url" > /dev/null    
+    echo "Request completed"
+}
+
+export -f make_request
+
+seq 10000 | parallel -j 12 make_request 
+
