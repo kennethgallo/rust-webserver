@@ -1,13 +1,12 @@
-# make 1000 requests to specified URL 
-
-url="http://slapkins.com/test.html"
+# make 10000 requests to specified URL 
 
 make_request() {
+    url="http://slapkins.com/test.html"
     curl -s  "$url" > /dev/null    
-    echo "Request completed"
 }
 
 export -f make_request
 
-seq 10000 | parallel -j 12 make_request 
+seq 10000 | parallel -j 24 make_request 
 
+    
