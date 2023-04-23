@@ -26,7 +26,7 @@ fn main() {
         match stream{
             Ok(stream) => {                
                 println!("Connection on  {} from {}", stream.local_addr().unwrap(), stream.peer_addr().unwrap());
-                thread::spawn(move ||  http_handler(stream));               
+                thread::spawn(||  http_handler(stream));               
             }
             Err(e) => {
                 println!("TCP Client conection Error {}",e);
