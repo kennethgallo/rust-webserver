@@ -6,7 +6,15 @@ Web server demo in the Rust programming language
 
 You will need to install Cargo to make get this program to run properly
 Cargo is Rust's build system and package manager. Most Rustaceans use cargo to manage Rust
-Follow this link and the instructions to properly install Cargo https://doc.rust-lang.org/cargo/getting-started/installation.html
+
+On Linux and macOS systems:
+curl https://sh.rustup.rs -sSf | sh
+After download and installation you should see this apear if you are successful:
+Rust is installed now. Great!
+
+On Windows got to this link and install the .exe file, then follow the instructions:
+https://doc.rust-lang.org/cargo/getting-started/installation.html
+
 
 
 If the above steps executed with out error run the command "cargo run".
